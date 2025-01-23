@@ -25,7 +25,7 @@ jobs:
 
       - name: Build Project
         run: ./gradlew build
-	#Using this to delete releases that only have the tag "release" when build is successful
+	# Using this to delete releases that only have the tag "release" when build is successful
       - uses: dev-drprasad/delete-tag-and-release@v0.2.1
         with:
           tag_name: pre-release #(required) tag name to delete 
