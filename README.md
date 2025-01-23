@@ -9,7 +9,7 @@ If you are using an older mod version with java 11 or higher and you are getting
 ## New Commands in Discord!
 - Use `/readfile <file-name>` to read a file from '/DiscordIntegration-Data/addons/' folder. By default it reads from inside this folder.
 - Use `/filereader permissions` to lists all permissions currently set in the `DCIFileReader.toml` config.
-- Use `filereader whitelist` to list all the file names in the whitelist. The whitelist can be found in the `DCIFileReader.toml` config as `whitelist = [""]`
+- Use `/filereader whitelist` to list all the file names in the whitelist. The whitelist can be found in the `DCIFileReader.toml` config as `whitelist = [""]`
 
 ## Config: `DCIFileReader.toml`
 To reload config, use `/discord reload` in-game or in console as its a default command from Discord Integration.
