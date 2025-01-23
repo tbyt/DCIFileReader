@@ -1,5 +1,10 @@
 # Discord Integration File Reader
-Addon for [Discord Integration](https://modrinth.com/plugin/dcintegration). 
+## Addon for [Discord Integration](https://modrinth.com/plugin/dcintegration).
+---
+## Installation
+Addons are installed to `SERVER/DiscordIntegration-Data/addons` so put the `DCIFIleReader-0.0.1.jar` there.
+
+If you are using an older mod version with java 11 or higher and you are getting errors, please start the server with ``java --add-opens java.base/java.io=ALL-UNNAMED -jar SERVER.jar``
 
 ## New Commands in Discord!
 - Use `/readfile <file-name>` to read a file from '/DiscordIntegration-Data/addons/' folder. By default it reads from inside this folder.
@@ -16,9 +21,9 @@ To reload config, use `/discord reload` in-game or in console as its a default c
 - By default, `whitelistNamesOnly` is set to `false` in the config, set this to `true` if you'd like to prevent the above scenario and only allow files YOU want and trusted people to access.
 - Again, `readfile` this is a read-only command. But it doesn't take much to discover endpoints and secrets.
 
-# Building this Project with Gradle Wrapper (Developers)
+## Building this Project with Gradle Wrapper (Developers)
 
-## Prerequisites
+### Prerequisites
 Make sure the following tools are installed on your system:
 
 When building use the corresponding supported Java Version that the Version of Minecraft Supports. Example: For Minecraft Java 1.21+, use Java jdk 21.
