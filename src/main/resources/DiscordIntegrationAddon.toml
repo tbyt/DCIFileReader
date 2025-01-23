@@ -1,0 +1,19 @@
+# Name of the addon
+name = "DCIFileReader"
+
+# Version of the addon
+version = "0.0.1"
+# Path to the main class of the addon
+# Example: "de.erdbeerbaerlp.dcintegrationWebhookCmd"
+#
+# If this parameter is missing, your addon will not load
+classPath = "com.tbyt.DCIFileReader"
+
+# Author of the Addon (optional)
+author = "tbyt"
+
+# Description of the Addon (optional)
+description = "https://github.com/tbyt/dcifilereader"
+
+# Required parameter to specify if the addon is compatible with this API version
+APIVersion = 3
