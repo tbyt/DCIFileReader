@@ -26,25 +26,17 @@ jobs:
         uses: gradle/actions/wrapper-validation@v4
       - name: Build Project
         run: ./gradlew build
-        # Using this to delete releases that only have the tag "release" when build is successful
-      - uses: dev-drprasad/delete-tag-and-release@v0.2.1
-        with:
-          tag_name: pre-release #(required) tag name to delete
-          delete_release: true #(optional) default: true
-          #repo: <owner>/<repoName> #(optional) target repository. default: repo running this action
+        # Delete releases that only have the tag "pre-release" when build is successful
+        # https://cli.github.com/manual/gh_release_delete
+      - run: gh release delete draft --yes
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # https://stackoverflow.com/a/73692692
+      # Before setting this as a release, you must manually delete the current release and then tag.
+      # https://cli.github.com/manual/gh_release_create
       - name: Create release
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: build/libs/DCIFileReader-*.jar
-          body: > 
-            "https://github.com/${{github.repository}}/compare/${{github.sha}}...master"
-            "https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}"
-          draft: true
-          generateReleaseNotes: true
-          prerelease: true
-          tag: "pre-release"
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release create draft build/libs/DCIFileReader-*.jar --draft --latest --notes >
+          "https://github.com/${{github.repository}}/compare/${{github.sha}}...master"
+          "https://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
