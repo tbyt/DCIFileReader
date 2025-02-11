@@ -6,6 +6,7 @@ public class ReadCommandConfig {
     @TomlComment("Command description of the readfile command")
     public String readCommandDescription = "Reads out a file from '/DiscordIntegration-Data/addons/' folder";
     public String readCommandArgDescription = "Name of the file in /DiscordIntegration-Data/addons/";
+    public String searchCommandArgDescription = "Search for content within the file. Useful if file is too large.";
 
     @TomlComment("File names that are only accessible by whitelist if chosen so.")
     public String whitelistCommandDescription = "File names that are in the whitelist";

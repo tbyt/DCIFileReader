@@ -19,6 +19,7 @@ public class ReadCommand extends DiscordCommand {
     protected ReadCommand() {
         super("readfile", DCIFileReader.cfg.readCommandDescription);
         addOption(OptionType.STRING,"name",DCIFileReader.cfg.readCommandArgDescription,true);
+        addOption(OptionType.STRING,"search",DCIFileReader.cfg.searchCommandArgDescription,false);
     }
 
     @Override
@@ -33,6 +34,7 @@ public class ReadCommand extends DiscordCommand {
     public void execute(SlashCommandInteractionEvent event, ReplyCallbackAction reply) {
         StringBuilder sb = new StringBuilder();
         final OptionMapping optionName = event.getOption("name");
+        final OptionMapping optionSearch = event.getOption("search");
         // if directory escalation is not allowed, must put check here.
         if(!DCIFileReader.cfg.allowDirectoryEscalation)
         {
@@ -65,6 +67,18 @@ public class ReadCommand extends DiscordCommand {
                         return;
                     }
                 }
+                if(optionSearch!=null)
+                {
+                    while (scanner.hasNextLine()) {
+                        String nextLine=scanner.nextLine();
+                        if(nextLine.contains(optionSearch.getAsString()))
+                            sb.append(nextLine).append("\n");
+                    }
+                    scanner.close();
+                    reply.setContent(sb.toString()).queue();
+                    return;
+                }
+                // if no search is given, we send the contents of the file in a discord message.
                 while (scanner.hasNextLine()) {
                     sb.append(scanner.nextLine()).append("\n");
                 }
