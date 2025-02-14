@@ -10,17 +10,18 @@ If you are using an older mod version with java 11 or higher and you are getting
 - Use `/readfile <file-name>` to read a file from '/DiscordIntegration-Data/addons/' folder. By default it reads from inside this folder.
   - Use `/readfile <file-name> <search>` to search for content within the file. Useful if file is too large.
 - Use `/filereader permissions` to lists all permissions currently set in the `DCIFileReader.toml` config.
-- Use `/filereader whitelist` to list all the file names in the whitelist. The whitelist can be found in the `DCIFileReader.toml` config as `whitelist = [""]`
+- Use `/filereader whitelist` to list all the file names in the whitelist. The whitelist can be found in the `DCIFileReader.toml` config as `whitelist = {""}`
 
 ## Config: `DCIFileReader.toml`
 To reload config, use `/discord reload` in-game or in console as its a default command from Discord Integration.
 
 # Security!
 - By default, admin mode `adminOnly` equals `true` in the config.
-- A feature in this addon is changing directories to search for files in. As such, You can go back a directory using `..` in the file name and forward a directory with `/`. By default, `allowDirectoryEscalation` is set to `false` in the config which disallows the direct use of `..` for changing directories/directory escalation.
+- A feature in this addon is changing directories to search for files in. As such, You can go back a directory using `..` in the file name and forward a directory with `/`. 
+  - By default, `allowDirectoryEscalation` is set to `false` in the config which disallows the direct use of `..` for changing directories/directory escalation.
 - Allowing directory changing can expose the server's file tree structure, including the files of the computer it is running on.
 - By default, `whitelistNamesOnly` is set to `false` in the config, set this to `true` if you'd like to prevent the above scenario and only allow files YOU want and trusted people to access.
-- Again, `readfile` this is a read-only command. But it doesn't take much to discover endpoints and secrets.
+- Although this addon is only reading files, it doesn't take much to discover endpoints and secrets.
 
 ## Building this Project with Gradle Wrapper (Developers)
 

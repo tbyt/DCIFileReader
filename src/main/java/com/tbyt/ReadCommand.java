@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
+import net.dv8tion.jda.api.utils.FileUpload;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -35,8 +36,29 @@ public class ReadCommand extends DiscordCommand {
         StringBuilder sb = new StringBuilder();
         final OptionMapping optionName = event.getOption("name");
         final OptionMapping optionSearch = event.getOption("search");
-        // if directory escalation is not allowed, must put check here.
-        if(!DCIFileReader.cfg.allowDirectoryEscalation)
+
+        // if whitelist is true set from the config.
+        if(DCIFileReader.cfg.whitelistNamesOnly)
+        {
+            boolean isEntryOnWhitelist = false;
+            for(String fileName : DCIFileReader.cfg.whitelist) {
+                if(optionName.getAsString().equals(fileName)) {
+                    isEntryOnWhitelist = true;
+                }
+            }
+            if(!isEntryOnWhitelist)
+            {
+                sb.append("File name given is not on the Whitelist.\n");
+                sb.append("File names in Whitelist: \n");
+                for(String fileName : DCIFileReader.cfg.whitelist) {
+                    sb.append(fileName).append("\n");
+                }
+                reply.setContent(sb.toString()).queue();
+                return;
+            }
+        }
+        // if directory escalation is not allowed, must put check here. Whitelist on, will bypass this option.
+        else if(!DCIFileReader.cfg.allowDirectoryEscalation)
         {
             if(optionName.getAsString().contains(".."))
             {
@@ -52,21 +74,6 @@ public class ReadCommand extends DiscordCommand {
             if (!RootDir.isAbsolute()) throw new RuntimeException("Cannot get Data path");
             try {
                 Scanner scanner = new Scanner(Paths.get(RootDir + "/" + optionName.getAsString()), StandardCharsets.UTF_8);
-                if(DCIFileReader.cfg.whitelistNamesOnly)
-                {
-                    boolean isEntryOnWhitelist = false;
-                    for(String fileName : DCIFileReader.cfg.whitelist) {
-                        if(optionName.getAsString().equals(fileName)) {
-                            isEntryOnWhitelist = true;
-                        }
-                    }
-                    if(!isEntryOnWhitelist)
-                    {
-                        sb.append("File name given is not on the Whitelist.\n");
-                        reply.setContent(sb.toString()).queue();
-                        return;
-                    }
-                }
                 if(optionSearch!=null)
                 {
                     while (scanner.hasNextLine()) {
@@ -89,6 +96,13 @@ public class ReadCommand extends DiscordCommand {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        reply.setContent(sb.toString()).queue();
+        try {
+            reply.setContent(sb.toString()).queue();
+        }
+        //Usually occurs when a file is larger than the character count, currently being larger than 2000.
+        catch(IllegalArgumentException e)
+        {
+            reply.setContent(optionName.getAsString()+" is larger than 2000 characters! We've attached it here.").addFiles(FileUpload.fromData(Paths.get(RootDir + "/" + optionName.getAsString()),optionName.getAsString())).queue();
+        }
     }
 }

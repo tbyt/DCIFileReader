@@ -18,7 +18,7 @@ public class ReadCommandConfig {
     @TomlComment("Should certain file names only be accessible by whitelist?")
     public boolean whitelistNamesOnly = false;
 
-    @TomlComment("Allowing this is not recommended!")
+    @TomlComment({"Allowing this is not recommended!","If Whitelist is on, then this option is true."})
     public boolean allowDirectoryEscalation = false;
 
     @TomlComment({"Should this only be available to admin roles?","Giving it to non-admins is not recommended!"})
